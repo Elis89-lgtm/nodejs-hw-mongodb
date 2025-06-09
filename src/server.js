@@ -31,6 +31,10 @@ export const setupServer = () => {
 
   app.use('/contacts', contactsRouter);
 
+  app.get('/', (req, res) => {
+    res.send('The API works! Use /contacts');
+  });
+
   app.use((req, res) => {
     res.status(404).json({
       message: 'Not found',
