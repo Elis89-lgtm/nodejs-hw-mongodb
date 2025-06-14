@@ -1,7 +1,7 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-import router from './routers/contacts.routers.js';
+import contactsRouter from './routers/contacts.routers.js';
 
 import { getEnvVar } from './utils/getEnvVar.js';
 import { ENV_VARS } from './constants/envVars.js';
@@ -16,7 +16,7 @@ export const setupServer = () => {
   app.use(express.json());
   app.use(cors(), pino(), requestIdMiddleware);
 
-  app.use(router);
+  app.use('/contacts', contactsRouter);
 
   app.use(notFoundHandler);
 
