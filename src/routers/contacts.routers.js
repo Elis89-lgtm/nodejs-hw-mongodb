@@ -13,7 +13,7 @@ const contactsRouter = Router();
 
 contactsRouter.get('/', getAllContactsController);
 contactsRouter.get('/:contactId', getContactByIdController);
-contactsRouter.post('/contacts', createContactController);
+contactsRouter.post('/', createContactController);
 contactsRouter.patch('/:contactId', patchContactController);
 contactsRouter.put('/:contactId', upsertContactController);
 contactsRouter.delete('/:contactId', deleteContactController);
