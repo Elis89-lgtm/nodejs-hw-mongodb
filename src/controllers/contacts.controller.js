@@ -33,7 +33,7 @@ export const createContactController = async (req, res) => {
     throw createHttpError(500, 'Failed to create contact');
   }
   res.status(201).json({
-    status: 'success',
+    status: 201,
     message: `Successfully created contact with id ${newContact._id}!`,
     data: newContact,
   });
@@ -69,7 +69,9 @@ export const patchContactController = async (req, res) => {
 
 export const deleteContactController = async (req, res) => {
   const { contactId } = req.params;
-  await deleteContactByIdService(contactId);
-
+  const deletedContact = await deleteContactByIdService(contactId);
+  if (!deletedContact) {
+    throw createHttpError(404, `Contact with id ${contactId} not found`);
+  }
   res.status(204).send();
 };
