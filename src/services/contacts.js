@@ -7,6 +7,8 @@ export const getAllContactsService = async ({
   perPage,
   sortOrder,
   sortBy,
+  type,
+  isFavourite,
   filters,
 }) => {
   const offset = (page - 1) * perPage;

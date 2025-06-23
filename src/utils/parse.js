@@ -1,6 +1,6 @@
 import { parseString } from './parseString';
 
-const parseNumber = (value, defaultValue) => {
+const parseNumber = (value, defaultValue = undefined) => {
   const parsed = Number.parseInt(value);
   if (Number.isNan(parsed)) {
     return defaultValue;

@@ -8,13 +8,13 @@ import {
   upsertContactController,
   patchContactController,
 } from '../controllers/contacts.controller.js';
-import { validateMongoDBId } from '../middlewares/validate-mongo-id.js';
+import { isValidId } from '../middlewares/validate-mongo-id.js';
 import { validateBody } from '../middlewares/validate-body-middleware.js';
 import { createContactSchema } from '../validation/createContact.js';
 import { updateContactSchema } from '../validation/updateContact.js';
 
 const contactsRouter = Router();
-contactsRouter.use('/:contactId', validateMongoDBId('contactId'));
+contactsRouter.use('/:contactId', isValidId('contactId'));
 
 contactsRouter.get('/', getAllContactsController);
 contactsRouter.get('/:contactId', getContactByIdController);

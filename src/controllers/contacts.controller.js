@@ -15,12 +15,15 @@ import {
 export const getAllContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
+  const { type, isFavourite } = req.query;
   const filters = parseFiltersContacts(req.query);
   const contacts = await getAllContactsService({
     page,
     perPage,
     sortBy,
     sortOrder,
+    type,
+    isFavourite,
     filters,
   });
   res.json({
