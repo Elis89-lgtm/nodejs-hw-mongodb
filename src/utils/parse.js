@@ -1,11 +1,15 @@
-import { parseString } from './parseString';
-
 const parseNumber = (value, defaultValue = undefined) => {
   const parsed = Number.parseInt(value);
   if (Number.isNan(parsed)) {
     return defaultValue;
   }
   return parsed;
+};
+
+export const parseString = (value) => {
+  return typeof value === 'string' && value.trim() !== ''
+    ? value.trim()
+    : undefined;
 };
 const parseBoolean = (value) => {
   if (['true', 'false'].includes(value)) return JSON.parse(value);
