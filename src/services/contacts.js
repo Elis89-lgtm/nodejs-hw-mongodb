@@ -2,7 +2,9 @@ import createHttpError from 'http-errors';
 import { Contact } from '../db/../models/contact.js';
 import { createPaginationMetadata } from '../utils/create-pagination.js';
 const allowedTypes = ['work', 'home', 'personal'];
+
 export const getAllContactsService = async ({
+  userId,
   page,
   perPage,
   sortOrder,
@@ -12,7 +14,7 @@ export const getAllContactsService = async ({
   filters,
 }) => {
   const offset = (page - 1) * perPage;
-  const contactFiltersConditions = Contact.find();
+  const contactFiltersConditions = Contact.find({ userId });
   if (filters.name) {
     contactFiltersConditions.where('name').regex(new RegExp(filters.name, 'i'));
   }
@@ -27,7 +29,7 @@ export const getAllContactsService = async ({
       .where('email')
       .regex(new RegExp(filters.email, 'i'));
   }
-  if (filters.isFavourite === 'boolean') {
+  if (typeof filters.isFavourite === 'boolean') {
     contactFiltersConditions.where('isFavourite').equals(filters.isFavourite);
   }
 
@@ -38,14 +40,14 @@ export const getAllContactsService = async ({
     contactFiltersConditions.where('contactType').in(validTypes);
   }
   const [contacts, contactsCount] = await Promise.all([
-    Contact.find()
-      .merge(contactFiltersConditions)
+    contactFiltersConditions
       .skip(offset)
       .limit(perPage)
       .sort({
         [sortBy]: sortOrder,
       }),
-    Contact.find().merge(contactFiltersConditions).countDocuments(),
+    // Contact.find({ userId }).merge(contactFiltersConditions).countDocuments(),
+    contactFiltersConditions.clone().countDocuments(),
   ]);
 
   const metadata = createPaginationMetadata(page, perPage, contactsCount);
@@ -53,8 +55,8 @@ export const getAllContactsService = async ({
   return { contacts, ...metadata };
 };
 
-export const getContactByIdService = async (contactId) => {
-  const contact = await Contact.findById(contactId);
+export const getContactByIdService = async (contactId, userId) => {
+  const contact = await Contact.findOne({ _id: contactId, userId });
 
   if (!contact) {
     throw createHttpError(404, 'Contact not found!');
@@ -69,22 +71,26 @@ export const createContactService = async (payload) => {
 };
 
 export const updateContact = async (contactId, payload, options = {}) => {
-  const result = await Contact.findByIdAndUpdate({ _id: contactId }, payload, {
-    ...options,
-    new: true,
-    includeResultMetadata: true,
-    runValidators: true,
-  });
-  if (!result.value) {
+  const result = await Contact.findOneAndUpdate(
+    { _id: contactId, userId: payload.userId },
+    payload,
+    {
+      ...options,
+      new: true,
+      // includeResultMetadata: true,
+      runValidators: true,
+    },
+  );
+  if (!result) {
     throw createHttpError(404, 'Contact not found!');
   }
   return {
-    contact: result.value,
-    isNew: !result.lastErrorObject.updatedExisting,
+    contact: result,
+    isNew: false,
   };
 };
-export const upsertContact = async (contactId, payload) => {
-  const contact = await Contact.findById(contactId);
+export const upsertContact = async (contactId, userId, payload) => {
+  const contact = await Contact.findOne({ _id: contactId, userId });
 
   if (contact) {
     contact.set(payload);
@@ -94,6 +100,10 @@ export const upsertContact = async (contactId, payload) => {
   }
 };
 
-export const deleteContactByIdService = async (contactId) => {
-  return await Contact.findByIdAndDelete(contactId);
+export const deleteContactByIdService = async (contactId, userId) => {
+  const contact = Contact.findOneAndDelete({ _id: contactId, userId });
+  if (!contact) {
+    throw createHttpError(404, 'Contact not found');
+  }
+  return contact;
 };

@@ -12,8 +12,10 @@ import { isValidId } from '../middlewares/validate-mongo-id.js';
 import { validateBody } from '../middlewares/validate-body-middleware.js';
 import { createContactSchema } from '../validation/createContact.js';
 import { updateContactSchema } from '../validation/updateContact.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const contactsRouter = Router();
+contactsRouter.use('/:contactId', authenticate);
 contactsRouter.use('/:contactId', isValidId('contactId'));
 
 contactsRouter.get('/', getAllContactsController);
