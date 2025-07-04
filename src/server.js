@@ -2,7 +2,7 @@ import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import contactsRouter from './routers/contacts.routers.js';
-
+import cookieParser from 'cookie-parser';
 import { getEnvVar } from './utils/getEnvVar.js';
 import { ENV_VARS } from './constants/envVars.js';
 
@@ -13,8 +13,13 @@ import { requestIdMiddleware } from './middlewares/requestIdMiddleware.js';
 export const setupServer = () => {
   const app = express();
 
-  app.use(express.json());
-  app.use(cors(), pino(), requestIdMiddleware);
+  app.use(
+    express.json({
+      type: ['application/json', 'application/vnd.api+json'],
+      limit: '100kb',
+    }),
+  );
+  app.use(cors(), pino(), cookieParser(), requestIdMiddleware);
 
   app.use('/contacts', contactsRouter);
 

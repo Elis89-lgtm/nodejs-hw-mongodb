@@ -1,6 +1,6 @@
 const parseNumber = (value, defaultValue = undefined) => {
   const parsed = Number.parseInt(value);
-  if (Number.isNan(parsed)) {
+  if (Number.isNaN(parsed)) {
     return defaultValue;
   }
   return parsed;

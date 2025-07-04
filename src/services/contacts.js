@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors';
-import { Contact } from '../db/../models/contact.js';
+import { Contact } from '../models/contact.js';
 import { createPaginationMetadata } from '../utils/create-pagination.js';
+
 const allowedTypes = ['work', 'home', 'personal'];
 
 export const getAllContactsService = async ({

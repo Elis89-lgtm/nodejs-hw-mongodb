@@ -1,8 +1,8 @@
 import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
 import crypto from 'node:crypto';
-import { User } from '../db/models/user.js';
-import { Session } from '../db/models/session.js';
+import { User } from '../models/user.js';
+import { Session } from '../models/session.js';
 
 const createSession = () => ({
   accessToken: crypto.randomBytes(30).toString('base64'),

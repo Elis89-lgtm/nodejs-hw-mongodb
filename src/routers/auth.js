@@ -6,8 +6,8 @@ import {
   registerUserController,
 } from '../controllers/auth.js';
 import { validateBody } from '../middlewares/validate-body-middleware.js';
-import { registerUserValidationSchema } from '../validation/register-user-validation-schema.js';
-import { loginUserValidationSchema } from '../validation/login-user-validation-schema.js';
+import { registerUserValidationSchema } from '../validation/registerUserValidationSchema.js';
+import { loginUserValidationSchema } from '../validation/loginUserValidationSchema.js';
 
 const authRouter = Router();
 
