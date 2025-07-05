@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors';
 import { Contact } from '../db/../models/contact.js';
 import { createPaginationMetadata } from '../utils/create-pagination.js';
+
 const allowedTypes = ['work', 'home', 'personal'];
 export const getAllContactsService = async ({
   page,
@@ -50,7 +51,12 @@ export const getAllContactsService = async ({
 
   const metadata = createPaginationMetadata(page, perPage, contactsCount);
 
-  return { contacts, ...metadata };
+  return {
+    data: {
+      data: contacts,
+      ...metadata,
+    },
+  };
 };
 
 export const getContactByIdService = async (contactId) => {
