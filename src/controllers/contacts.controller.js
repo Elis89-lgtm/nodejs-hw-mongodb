@@ -16,8 +16,9 @@ export const getAllContactsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
   const { sortBy, sortOrder } = parseSortParams(req.query);
   const { type, isFavourite } = req.query;
+
   const filters = parseFiltersContacts(req.query);
-  const contacts = await getAllContactsService({
+  const result = await getAllContactsService({
     page,
     perPage,
     sortBy,
@@ -29,7 +30,7 @@ export const getAllContactsController = async (req, res) => {
   res.json({
     status: 200,
     message: 'Successfully retrieved contacts!',
-    data: contacts,
+    data: result.data,
   });
 };
 export const getContactByIdController = async (req, res) => {
@@ -44,10 +45,8 @@ export const getContactByIdController = async (req, res) => {
 };
 
 export const createContactController = async (req, res) => {
-  const payload = {
-    ...req.body,
-    userId: req.user._id,
-  };
+  const payload = req.body;
+
   const newContact = await createContactService(payload);
   if (!newContact) {
     throw createHttpError(500, 'Failed to create contact');
