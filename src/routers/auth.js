@@ -12,16 +12,16 @@ import { loginUserValidationSchema } from '../validation/loginUserValidationSche
 const authRouter = Router();
 
 authRouter.post(
-  '/auth/register',
+  '/register',
   validateBody(registerUserValidationSchema),
   registerUserController,
 );
 authRouter.post(
-  '/auth/login',
+  '/login',
   validateBody(loginUserValidationSchema),
   loginUserController,
 );
-authRouter.post('/auth/logout', logoutUserController);
-authRouter.post('/auth/refresh-session', refreshSessionController);
+authRouter.post('/logout', logoutUserController);
+authRouter.post('/refresh-session', refreshSessionController);
 
 export default authRouter;
