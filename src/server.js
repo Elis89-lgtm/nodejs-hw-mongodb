@@ -5,7 +5,7 @@ import contactsRouter from './routers/contacts.routers.js';
 import cookieParser from 'cookie-parser';
 import { getEnvVar } from './utils/getEnvVar.js';
 import { ENV_VARS } from './constants/envVars.js';
-
+import authRouter from './routers/auth.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandlerMiddlewares } from './middlewares/errorHandler.js';
 import { requestIdMiddleware } from './middlewares/requestIdMiddleware.js';
@@ -22,6 +22,7 @@ export const setupServer = () => {
   app.use(cors(), pino(), cookieParser(), requestIdMiddleware);
 
   app.use('/contacts', contactsRouter);
+  app.use('/auth', authRouter);
 
   app.use(notFoundHandler);
 
