@@ -3,6 +3,7 @@ import { MongooseError } from 'mongoose';
 import Joi from 'joi';
 
 export const errorHandlerMiddlewares = (error, req, res, next) => {
+  console.error(error);
   if (isHttpError(error)) {
     return res.status(error.status).json({
       status: 'error',

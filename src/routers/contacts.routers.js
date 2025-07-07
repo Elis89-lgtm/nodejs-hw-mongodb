@@ -15,7 +15,7 @@ import { updateContactSchema } from '../validation/updateContact.js';
 import { authenticate } from '../middlewares/authenticate.js';
 
 const contactsRouter = Router();
-contactsRouter.use('/:contactId', authenticate);
+contactsRouter.use(authenticate);
 contactsRouter.use('/:contactId', isValidId('contactId'));
 
 contactsRouter.get('/', getAllContactsController);
