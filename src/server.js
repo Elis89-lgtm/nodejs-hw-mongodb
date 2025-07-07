@@ -33,4 +33,12 @@ export const setupServer = () => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
+
+  app.use((err, req, res, next) => {
+    console.error(err);
+
+    res.status(err.status || 500).json({
+      message: err.message || 'Internal Server Error',
+    });
+  });
 };
