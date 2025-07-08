@@ -23,6 +23,6 @@ authRouter.post(
 );
 authRouter.post('/logout', logoutUserController);
 authRouter.get('/refresh', refreshSessionController);
-authRouter.post('/refresh-session', refreshSessionController);
+authRouter.post('/refresh', refreshSessionController);
 
 export default authRouter;
