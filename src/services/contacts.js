@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors';
 import { Contact } from '../models/contact.js';
 import { createPaginationMetadata } from '../utils/create-pagination.js';
+import { saveFile } from '../utils/save-file.js';
 
 const allowedTypes = ['work', 'home', 'personal'];
 
@@ -70,8 +71,12 @@ export const getContactByIdService = async (contactId, userId) => {
 
   return contact;
 };
-export const createContactService = async (payload) => {
-  const newContact = await Contact.create(payload);
+export const createContactService = async (payload, file) => {
+  let photoUrl = '';
+  if (file) {
+    photoUrl = await saveFile(file.path);
+  }
+  const newContact = await Contact.create({ ...payload, photo: photoUrl });
 
   return newContact;
 };
@@ -79,11 +84,17 @@ export const createContactService = async (payload) => {
 export const updateContact = async (
   contactId,
   payload,
-  { userId, upsert = false } = {},
+  { userId, upsert = false, file } = {},
 ) => {
+  const updatedFields = { ...payload };
+  if (file) {
+    const photoUrl = await saveFile(file.path);
+    updatedFields.photo = photoUrl;
+  }
+
   const contact = await Contact.findOneAndUpdate(
     { _id: contactId, userId },
-    { $set: payload },
+    { $set: updatedFields },
 
     {
       new: true,
@@ -115,6 +126,20 @@ export const upsertContact = async (contactId, payload, userId) => {
     };
   }
 };
+
+export const uploadContactsAvatar = async (contactId, file) => {
+  const url = await saveFile(file);
+
+  const contact = await Contact.findByIdAndUpdate(
+    contactId,
+    {
+      photo: url,
+    },
+    { new: true },
+  );
+  return contact;
+};
+
 export const deleteContactByIdService = async (contactId, userId) => {
   const contact = await Contact.findOneAndDelete({ _id: contactId, userId });
   if (!contact) {

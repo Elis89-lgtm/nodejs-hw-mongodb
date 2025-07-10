@@ -5,6 +5,7 @@ import {
   deleteContactByIdService,
   createContactService,
   updateContact,
+  uploadContactsAvatar,
 } from '../services/contacts.js';
 import {
   parseFiltersContacts,
@@ -54,7 +55,7 @@ export const createContactController = async (req, res) => {
     ...req.body,
     userId: req.user._id,
   };
-  const newContact = await createContactService(payload);
+  const newContact = await createContactService(payload, req.file);
   if (!newContact) {
     throw createHttpError(500, 'Failed to create contact');
   }
@@ -90,6 +91,7 @@ export const patchContactController = async (req, res) => {
   const { contact } = await updateContact(contactId, req.body, {
     upsert: false,
     userId: req.user._id,
+    file: req.file,
   });
 
   if (!contact) {
@@ -99,6 +101,17 @@ export const patchContactController = async (req, res) => {
   res.json({
     status: 200,
     message: `Successfully updated contact with id ${contactId}!`,
+    data: contact,
+  });
+};
+
+export const uploadContactsAvatarController = async (req, res) => {
+  const { contactId } = req.params;
+  const contact = await uploadContactsAvatar(contactId, req.file);
+
+  return res.json({
+    message: `Successfully updated contacts photo with id ${contactId}!`,
+    status: 200,
     data: contact,
   });
 };

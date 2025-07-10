@@ -9,6 +9,7 @@ import authRouter from './routers/auth.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandlerMiddlewares } from './middlewares/errorHandler.js';
 import { requestIdMiddleware } from './middlewares/requestIdMiddleware.js';
+import { PERMANENT_UPLOAD_DIR } from './constants/paths.js';
 
 export const setupServer = () => {
   const app = express();
@@ -19,6 +20,8 @@ export const setupServer = () => {
       limit: '100kb',
     }),
   );
+  app.use('/uploads', express.static(PERMANENT_UPLOAD_DIR));
+
   app.use(cors(), pino(), cookieParser(), requestIdMiddleware);
 
   app.use('/contacts', contactsRouter);
