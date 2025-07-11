@@ -20,6 +20,7 @@ export const sendEmail = async ({ email, html, subject }) => {
       subject,
       from: getEnvVar(ENV_VARS.SMTP_FROM),
     });
+    return true;
   } catch (err) {
     console.error(err);
     throw createHttpError(500, 'Failed to send email');
