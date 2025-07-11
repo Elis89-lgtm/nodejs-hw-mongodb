@@ -9,7 +9,7 @@ import { sendEmail } from '../utils/sendEmail.js';
 import { ENV_VARS } from '../constants/envVars.js';
 import Handlebars from 'handlebars';
 import path from 'node:path';
-import fs from 'node:fs/promises';
+import fs from 'node:fs';
 import { TEMPLATE_DIR } from '../constants/paths.js';
 
 const resetPasswordTemplate = fs
