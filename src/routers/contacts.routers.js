@@ -15,6 +15,7 @@ import { createContactSchema } from '../validation/createContact.js';
 import { updateContactSchema } from '../validation/updateContact.js';
 import { authenticate } from '../middlewares/authenticate.js';
 import { upload } from '../middlewares/multer.js';
+import { normalizeBooleanFields } from '../middlewares/normalizeBooleanFields.js';
 
 const contactsRouter = Router();
 contactsRouter.use(authenticate);
@@ -26,6 +27,7 @@ contactsRouter.get('/:contactId', getContactByIdController);
 contactsRouter.post(
   '/',
   upload.single('photo'),
+  normalizeBooleanFields(['isFavourite']),
   validateBody(createContactSchema),
   createContactController,
 );

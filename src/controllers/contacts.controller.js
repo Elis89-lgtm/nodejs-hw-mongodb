@@ -51,9 +51,6 @@ export const getContactByIdController = async (req, res) => {
 };
 
 export const createContactController = async (req, res) => {
-  if ('isFavourite' in req.body) {
-    req.body.isFavourite = req.body.isFavourite === 'true';
-  }
   const payload = {
     ...req.body,
     userId: req.user._id,
