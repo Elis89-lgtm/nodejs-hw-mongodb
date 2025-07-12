@@ -9,7 +9,15 @@ import authRouter from './routers/auth.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandlerMiddlewares } from './middlewares/errorHandler.js';
 import { requestIdMiddleware } from './middlewares/requestIdMiddleware.js';
-import { PERMANENT_UPLOAD_DIR } from './constants/paths.js';
+import { PERMANENT_UPLOAD_DIR, TEMP_UPLOAD_DIR } from './constants/paths.js';
+import fs from 'fs';
+
+if (!fs.existsSync(TEMP_UPLOAD_DIR)) {
+  fs.mkdirSync(TEMP_UPLOAD_DIR, { recursive: true });
+  console.log('TEMP_UPLOAD_DIR created:', TEMP_UPLOAD_DIR);
+} else {
+  console.log('TEMP_UPLOAD_DIR already exists:', TEMP_UPLOAD_DIR);
+}
 
 export const setupServer = () => {
   const app = express();
