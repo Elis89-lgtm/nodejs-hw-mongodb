@@ -11,6 +11,7 @@ import { errorHandlerMiddlewares } from './middlewares/errorHandler.js';
 import { requestIdMiddleware } from './middlewares/requestIdMiddleware.js';
 import { PERMANENT_UPLOAD_DIR, TEMP_UPLOAD_DIR } from './constants/paths.js';
 import fs from 'fs';
+import { setupSwagger } from './middlewares/swagger.js';
 
 if (!fs.existsSync(TEMP_UPLOAD_DIR)) {
   fs.mkdirSync(TEMP_UPLOAD_DIR, { recursive: true });
@@ -28,6 +29,7 @@ export const setupServer = () => {
       limit: '100kb',
     }),
   );
+  app.use('/api-docs', setupSwagger());
   app.use('/uploads', express.static(PERMANENT_UPLOAD_DIR));
 
   app.use(cors(), pino(), cookieParser(), requestIdMiddleware);
