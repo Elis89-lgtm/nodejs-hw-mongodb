@@ -16,7 +16,7 @@ requestBody:
           - email
           - isFavourite
           - contactType
-        properties: # <-- properties має бути тут, всередині schema
+        properties:
           name:
             description: "Contact's name"
             type: string
