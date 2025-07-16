@@ -71,6 +71,7 @@ export const upsertContactController = async (req, res) => {
   const { contact, isNew } = await updateContact(contactId, req.body, {
     upsert: true,
     userId: req.user._id,
+    file: req.file,
   });
 
   if (!contact) {

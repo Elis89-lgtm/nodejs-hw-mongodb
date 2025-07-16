@@ -2,7 +2,7 @@ tags:
   - Contacts
 summary: Get list of contacts
 operationId: getContacts
-description: 'Get list of users with this endpoint'
+description: 'Get list of contacts with pagination, sorting, and filtering'
 security:
   - bearerAuth: []
 parameters:
@@ -20,8 +20,8 @@ parameters:
     name: sortBy
     schema:
       type: string
-      example: isFavourite, contactType
-    description: 'All Contacts fields '
+      example: isFavourite
+    description: 'Field to sort by (e.g., isFavourite, contactType)'
   - in: query
     name: sortOrder
     schema:

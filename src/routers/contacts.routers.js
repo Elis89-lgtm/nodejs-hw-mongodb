@@ -47,6 +47,7 @@ contactsRouter.patch(
 );
 contactsRouter.put(
   '/:contactId',
+  upload.single('photo'),
   validateBody(createContactSchema),
   upsertContactController,
 );
