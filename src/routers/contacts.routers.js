@@ -31,6 +31,7 @@ contactsRouter.post(
 );
 contactsRouter.patch(
   '/:contactId',
+  upload.none(),
   validateBody(updateContactSchema),
   patchContactController,
 );

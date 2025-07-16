@@ -93,7 +93,7 @@ export const patchContactController = async (req, res) => {
     userId: req.user._id,
     file: req.file,
   });
-
+  console.log(req.body);
   if (!contact) {
     throw createHttpError(404, `Contact with id ${contactId} not found`);
   }
