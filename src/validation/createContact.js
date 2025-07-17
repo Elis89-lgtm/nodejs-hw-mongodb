@@ -9,4 +9,5 @@ export const createContactSchema = Joi.object({
     .valid('work', 'home', 'personal')
     .default('personal')
     .required(),
+  photo: Joi.string().allow('').optional(),
 });
