@@ -29,8 +29,6 @@ export const getAllContactsController = async (req, res) => {
     isFavourite,
     filters,
   });
-  console.log('userId in GET:', req.user._id);
-  console.log('filters in GET:', { type, isFavourite, filters });
 
   res.json({
     status: 200,
